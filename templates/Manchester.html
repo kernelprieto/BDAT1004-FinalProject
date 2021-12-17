@@ -1,0 +1,49 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Manchester{% endblock %}
+{% block content %}
+
+
+<div class="page-header">
+  <h1>{{cityName}},{{country}} <br> Time Zone: {{localtime}} </h1>
+  <h2> Latitude: {{cityLatitud}}, Longitude: {{cityLongitud}}        <br>  Temperature: {{"{:.1f}".format(temp_K) }}°C   </h2>
+</div>
+<p class="lead"></p>
+<html>
+  <head>
+   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+   <script type="text/javascript">
+    google.charts.load('current', {'packages':['gauge']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+        ['Label', 'Value'],
+        ['Humidity [%]', {{humidity}}],
+        ['Wind [m/s]', {{wind_speed}}],
+        ['Pressure [Hg]', {{pressure}}],
+        ]);
+
+        var options = {
+          width: 1100, height: 450,
+          min: -40,
+          max: 100,
+          redFrom: 80, redTo: 100,
+          yellowFrom:60, yellowTo: 80,
+          minorTicks: 5
+        };
+
+        var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
+
+        chart.draw(data, options);
+      }
+
+    </script>
+  </head>
+  <body>
+    <div id="chart_div" style="width: 300px; height: 200spx;"></div>
+  </body>
+</html>
+
+{% endblock %}
